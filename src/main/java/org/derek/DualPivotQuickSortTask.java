@@ -21,9 +21,9 @@ public class DualPivotQuickSortTask extends RecursiveAction {
     /**
      * Sorts the specified range of the array by Dual-Pivot Quicksort.
      *
-     * @param a the array to be sorted
-     * @param left the index of the first element, inclusive, to be sorted
-     * @param right the index of the last element, inclusive, to be sorted
+     * @param a        the array to be sorted
+     * @param left     the index of the first element, inclusive, to be sorted
+     * @param right    the index of the last element, inclusive, to be sorted
      * @param leftmost indicates if this part is the leftmost in the range
      */
     public DualPivotQuickSortTask(int[] a, int left, int right, boolean leftmost) {
@@ -77,7 +77,8 @@ public class DualPivotQuickSortTask extends RecursiveAction {
                     int a1 = a[k], a2 = a[left];
 
                     if (a1 < a2) {
-                        a2 = a1; a1 = a[left];
+                        a2 = a1;
+                        a1 = a[left];
                     }
                     while (a1 < a[--k]) {
                         a[k + 2] = a[k];
@@ -116,26 +117,54 @@ public class DualPivotQuickSortTask extends RecursiveAction {
         int e5 = e4 + seventh;
 
         // Sort these elements using insertion informedSort
-        if (a[e2] < a[e1]) { int t = a[e2]; a[e2] = a[e1]; a[e1] = t; }
-
-        if (a[e3] < a[e2]) { int t = a[e3]; a[e3] = a[e2]; a[e2] = t;
-            if (t < a[e1]) { a[e2] = a[e1]; a[e1] = t; }
+        if (a[e2] < a[e1]) {
+            int t = a[e2];
+            a[e2] = a[e1];
+            a[e1] = t;
         }
-        if (a[e4] < a[e3]) { int t = a[e4]; a[e4] = a[e3]; a[e3] = t;
-            if (t < a[e2]) { a[e3] = a[e2]; a[e2] = t;
-                if (t < a[e1]) { a[e2] = a[e1]; a[e1] = t; }
+
+        if (a[e3] < a[e2]) {
+            int t = a[e3];
+            a[e3] = a[e2];
+            a[e2] = t;
+            if (t < a[e1]) {
+                a[e2] = a[e1];
+                a[e1] = t;
             }
         }
-        if (a[e5] < a[e4]) { int t = a[e5]; a[e5] = a[e4]; a[e4] = t;
-            if (t < a[e3]) { a[e4] = a[e3]; a[e3] = t;
-                if (t < a[e2]) { a[e3] = a[e2]; a[e2] = t;
-                    if (t < a[e1]) { a[e2] = a[e1]; a[e1] = t; }
+        if (a[e4] < a[e3]) {
+            int t = a[e4];
+            a[e4] = a[e3];
+            a[e3] = t;
+            if (t < a[e2]) {
+                a[e3] = a[e2];
+                a[e2] = t;
+                if (t < a[e1]) {
+                    a[e2] = a[e1];
+                    a[e1] = t;
+                }
+            }
+        }
+        if (a[e5] < a[e4]) {
+            int t = a[e5];
+            a[e5] = a[e4];
+            a[e4] = t;
+            if (t < a[e3]) {
+                a[e4] = a[e3];
+                a[e3] = t;
+                if (t < a[e2]) {
+                    a[e3] = a[e2];
+                    a[e2] = t;
+                    if (t < a[e1]) {
+                        a[e2] = a[e1];
+                        a[e1] = t;
+                    }
                 }
             }
         }
 
         // Pointers
-        int less  = left;  // The index of the first element of center part
+        int less = left;  // The index of the first element of center part
         int great = right; // The index before the first element of right part
 
         if (a[e1] != a[e2] && a[e2] != a[e3] && a[e3] != a[e4] && a[e4] != a[e5]) {
@@ -159,8 +188,8 @@ public class DualPivotQuickSortTask extends RecursiveAction {
             /*
              * Skip elements, which are less or greater than pivot values.
              */
-            while (a[++less] < pivot1);
-            while (a[--great] > pivot2);
+            while (a[++less] < pivot1) ;
+            while (a[--great] > pivot2) ;
 
             /*
              * Partitioning:
@@ -215,11 +244,13 @@ public class DualPivotQuickSortTask extends RecursiveAction {
             }
 
             // Swap pivots into their final positions
-            a[left]  = a[less  - 1]; a[less  - 1] = pivot1;
-            a[right] = a[great + 1]; a[great + 1] = pivot2;
+            a[left] = a[less - 1];
+            a[less - 1] = pivot1;
+            a[right] = a[great + 1];
+            a[great + 1] = pivot2;
 
             // Sort left and right parts recursively, excluding known pivots
-            invokeAll(new DualPivotQuickSortTask(a, left, less - 2, leftmost),new DualPivotQuickSortTask(a, great + 2, right, false));
+            invokeAll(new DualPivotQuickSortTask(a, left, less - 2, leftmost), new DualPivotQuickSortTask(a, great + 2, right, false));
 
             /*
              * If center part is too large (comprises > 4/7 of the array),
@@ -358,7 +389,7 @@ public class DualPivotQuickSortTask extends RecursiveAction {
              * All elements from center part are equal
              * and, therefore, already sorted.
              */
-            invokeAll(new DualPivotQuickSortTask(a, left, less - 1, leftmost),new DualPivotQuickSortTask(a, great + 1, right, false));
+            invokeAll(new DualPivotQuickSortTask(a, left, less - 1, leftmost), new DualPivotQuickSortTask(a, great + 1, right, false));
         }
     }
 

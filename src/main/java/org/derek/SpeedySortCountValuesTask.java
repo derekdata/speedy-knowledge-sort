@@ -35,9 +35,9 @@ final class SpeedySortCountValuesTask extends RecursiveTask<int[]> {
         } else {
 
             final int midPos = (startPos + endPos) >>> 1;
-            final SpeedySortCountValuesTask speedySortCountValuesTask1 = new SpeedySortCountValuesTask(source, startPos, midPos,valueRange);
+            final SpeedySortCountValuesTask speedySortCountValuesTask1 = new SpeedySortCountValuesTask(source, startPos, midPos, valueRange);
             speedySortCountValuesTask1.fork();
-            final SpeedySortCountValuesTask speedySortCountValuesTask2 = new SpeedySortCountValuesTask(source, midPos, endPos,valueRange);
+            final SpeedySortCountValuesTask speedySortCountValuesTask2 = new SpeedySortCountValuesTask(source, midPos, endPos, valueRange);
             return sumArrays(speedySortCountValuesTask2.compute(), speedySortCountValuesTask1.join());
         }
 

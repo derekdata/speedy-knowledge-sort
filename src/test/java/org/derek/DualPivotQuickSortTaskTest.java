@@ -29,16 +29,10 @@ public class DualPivotQuickSortTaskTest {
         final int[] a2 = new int[a.length];
         System.arraycopy(a, 0, a2, 0, a.length);
 
-        //build count array
-        int[] b = new int[Sorter.VALUE_RANGE];
-        for (int i = 0; i < Sorter.VALUE_RANGE; i++) {
-            b[i] = arrayMultiplier;
-        }
-
         final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
         final ForkJoinPool pool = new ForkJoinPool(AVAILABLE_PROCESSORS);
 
-        final DualPivotQuickSortTask task2 = new DualPivotQuickSortTask(a,0,a.length -1,true);
+        final DualPivotQuickSortTask task2 = new DualPivotQuickSortTask(a, 0, a.length - 1, true);
         pool.invoke(task2);
 
         Arrays.sort(a2);

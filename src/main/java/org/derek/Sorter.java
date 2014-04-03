@@ -7,6 +7,8 @@ package org.derek;
  */
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 
@@ -14,7 +16,6 @@ import java.util.concurrent.ForkJoinPool;
  * Sort demonstration
  */
 public final class Sorter {
-
 
     final static int VALUE_RANGE = 10;
 
@@ -24,33 +25,31 @@ public final class Sorter {
 
     public static void main(final String[] args) {
 
-        final Sorter sorter = new Sorter();
+        int[] largeIntArray1 = getLargeIntArray();
 
-        final int[] largeIntArray1 = getLargeIntArray();
-
-        final int[] largeIntArray2 = new int[largeIntArray1.length];
+        int[] largeIntArray2 = new int[largeIntArray1.length];
         System.arraycopy(largeIntArray1, 0, largeIntArray2, 0, largeIntArray1.length);
 
-        final int[] largeIntArray3 = new int[largeIntArray1.length];
+        int[] largeIntArray3 = new int[largeIntArray1.length];
         System.arraycopy(largeIntArray1, 0, largeIntArray3, 0, largeIntArray1.length);
 
-        final int[] largeIntArray4 = new int[largeIntArray1.length];
+        int[] largeIntArray4 = new int[largeIntArray1.length];
         System.arraycopy(largeIntArray1, 0, largeIntArray4, 0, largeIntArray1.length);
 
         final long t0 = System.nanoTime();
-        sorter.informedSort(largeIntArray1);
+        Sorter.informedSort(largeIntArray1);
         System.out.println("Sorting took " + ((System.nanoTime() - t0) / 1000000) + " millis without threads");
 
         final long t1 = System.nanoTime();
-        sorter.informedThreadedSort(largeIntArray2);
+        Sorter.informedThreadedSort(largeIntArray2);
         System.out.println("Sorting took " + ((System.nanoTime() - t1) / 1000000) + " millis with threads");
 
         final long t2 = System.nanoTime();
-        sorter.sort(largeIntArray3);
+        Sorter.sort(largeIntArray3);
         System.out.println("Control group: Sorting took " + ((System.nanoTime() - t2) / 1000000) + " millis without threads using standard Arrays.sort");
 
         final long t3 = System.nanoTime();
-        sorter.sortWithThreads(largeIntArray4);
+        Sorter.sortWithThreads(largeIntArray4);
         System.out.println("Control group: Sorting took " + ((System.nanoTime() - t3) / 1000000) + " millis with threads using slightly modified Arrays.sort");
 
 
@@ -67,12 +66,13 @@ public final class Sorter {
 
     /**
      * Sort array
-     * @param a
+     *
+     * @param a array to be sorted
      */
     static void sortWithThreads(final int[] a) {
         final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
         final ForkJoinPool pool = new ForkJoinPool(AVAILABLE_PROCESSORS);
-        DualPivotQuickSortTask dualPivotQuickSortTask = new DualPivotQuickSortTask(a,0,a.length-1,true);
+        DualPivotQuickSortTask dualPivotQuickSortTask = new DualPivotQuickSortTask(a, 0, a.length - 1, true);
         pool.invoke(dualPivotQuickSortTask);
     }
 
@@ -84,7 +84,7 @@ public final class Sorter {
      * Sort array with range of known values.
      * This method is optimized for the problem at-hand
      *
-     * @param a
+     * @param a array to be sorted
      */
     static void informedSort(final int[] a) {
         final int[] countTracker = new int[VALUE_RANGE];
@@ -100,14 +100,39 @@ public final class Sorter {
         }
     }
 
+    /**
+     * Sort array with range of known values.
+     * This method is optimized for the problem at-hand
+     *
+     * @param a  array to be sorted
+     */
+    static void informedSortDynamic(final int[] a) {
+        final Map<Integer, Integer> countTracker = new HashMap<>();
+        for (final int anA : a) {
+            Integer tInt = countTracker.get(anA);
+            if (tInt == null) {
+                countTracker.put(anA, 1);
+            } else {
+                countTracker.put(anA, tInt + 1);
+            }
+        }
+        int start = 0;
+        for (int i = 0; i < countTracker.size(); i++) {
+            for (int z = start; z < (countTracker.get(i) + start); z++) {
+                a[z] = i;
+            }
+            start += countTracker.get(i);
+        }
+    }
+
 
     /**
      * Sort array with range of known values using fork/join framework.
      * This method is optimized for the problem at-hand
      *
-     * @param a
+     * @param a array to be sorted
      */
-    static final void informedThreadedSort(final int[] a) {
+    static void informedThreadedSort(final int[] a) {
         final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
         final ForkJoinPool pool = new ForkJoinPool(AVAILABLE_PROCESSORS);
