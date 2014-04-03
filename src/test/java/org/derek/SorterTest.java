@@ -17,7 +17,7 @@ public class SorterTest {
     @Test
     public void sort_verifyAccuracy() {
 
-        final int[] input = Sorter.getLargeIntArray();
+        final int[] input = Sorter.getIntArray(10000);
 
         final int[] input2 = new int[input.length];
         System.arraycopy(input, 0, input2, 0, input.length);
@@ -34,7 +34,7 @@ public class SorterTest {
     @Test
     public void threadedSort_verifyAccuracy() {
 
-        int[] input = Sorter.getLargeIntArray();
+        int[] input = Sorter.getIntArray(10000);
 
         final int[] input2 = new int[input.length];
         System.arraycopy(input, 0, input2, 0, input.length);
@@ -52,7 +52,7 @@ public class SorterTest {
     @Ignore
     public void informedSortDynamic_verifyAccuracy() {
 
-        final int[] input = Sorter.getLargeIntArray();
+        final int[] input = Sorter.getIntArray(10000);
 
         final int[] input2 = new int[input.length];
         System.arraycopy(input, 0, input2, 0, input.length);

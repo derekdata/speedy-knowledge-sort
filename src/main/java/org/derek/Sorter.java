@@ -25,7 +25,7 @@ public final class Sorter {
 
     public static void main(final String[] args) {
 
-        int[] largeIntArray1 = getLargeIntArray();
+        int[] largeIntArray1 = getIntArray(1 << 27);
 
         int[] largeIntArray2 = new int[largeIntArray1.length];
         System.arraycopy(largeIntArray1, 0, largeIntArray2, 0, largeIntArray1.length);
@@ -55,9 +55,9 @@ public final class Sorter {
 
     }
 
-    static int[] getLargeIntArray() {
+    static int[] getIntArray(final int size) {
         final Random rand = new Random();
-        final int[] input = new int[1 << 27];
+        final int[] input = new int[size];
         for (int i = 0; i < input.length; i++) {
             input[i] = Math.abs(rand.nextInt()) % 10;
         }

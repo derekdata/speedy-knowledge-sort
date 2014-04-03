@@ -14,7 +14,7 @@ public class DualPivotQuickSortTaskTest {
     @Test
     public void compute() {
 
-        final int arrayMultiplier = 10000000;
+        final int arrayMultiplier = 1000;
 
         //build array to be sorted
         int[] a = new int[Sorter.VALUE_RANGE * arrayMultiplier];
