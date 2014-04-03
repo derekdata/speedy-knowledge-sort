@@ -1,5 +1,6 @@
 before_script:
  - "echo $JAVA_OPTS"
- - "export JAVA_OPTS=-Xmx4g"
- - "export MAVEN_OPTS=-Xmx4g"
+ - "export JAVA_OPTS=-Xmx4G"
+ - "export JVM_OPTS=-Xmx4G"
+ - "export MAVEN_OPTS=-Xmx4G"
 language: java
