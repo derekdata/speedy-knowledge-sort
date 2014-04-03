@@ -1,5 +1,6 @@
 package org.derek;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -33,7 +34,7 @@ public class SorterTest {
     @Test
     public void threadedSort_verifyAccuracy() {
 
-        final int[] input = Sorter.getLargeIntArray();
+        int[] input = Sorter.getLargeIntArray();
 
         final int[] input2 = new int[input.length];
         System.arraycopy(input, 0, input2, 0, input.length);
@@ -48,6 +49,7 @@ public class SorterTest {
 
 
     @Test
+    @Ignore
     public void informedSortDynamic_verifyAccuracy() {
 
         final int[] input = Sorter.getLargeIntArray();
